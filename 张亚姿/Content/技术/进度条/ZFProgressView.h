@@ -43,6 +43,11 @@ IB_DESIGNABLE
 //动画持续时间。 单位：秒
 @property (nonatomic) CGFloat timeDuration;
 
+/**
+ * 显示的最终的值
+ */
+@property (nonatomic,strong) NSString *mEndValue;
+
 /*
  设置每个格子的宽度与线条宽度要注意
  由于使用原点画圆弧的原因，距离原点越近，弧长越短
@@ -62,9 +67,6 @@ IB_DESIGNABLE
 
 - (instancetype) initWithFrame:(CGRect)frame style:(ZFProgressViewStyle)style withImage:(UIImage *)image;
 
--(void)setProgress:(CGFloat)Percentage Animated:(BOOL)animated;
+-(void)setProgress:(CGFloat)Percentage Animated:(BOOL)animated EndValue:(NSString *)mEndValue;
 
 @end
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com

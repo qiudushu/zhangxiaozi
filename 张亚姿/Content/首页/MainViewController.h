@@ -10,4 +10,7 @@
 
 @interface MainViewController : BaseViewController
 
+@property (nonatomic ,strong) NSString *mType;
+
+
 @end

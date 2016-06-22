@@ -27,7 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
+    self.view.backgroundColor = [UIColor greenColor];
     //计时器
     switchTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                    target:self
@@ -36,29 +36,8 @@
                                                   repeats:YES];
     
     imageLaunch = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
-//    if ([MyHelper connectedToNetwork])
-//    {
-//        [imageLaunch sd_setImageWithURL:[NSURL URLWithString:IMGURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            if (error)
-//            {
-//                imageLaunch.image = [UIImage imageNamed:@"Launch-h568@2x.png"];
-//            }
-//            else
-//            {
-//                imageLaunch.image = image;
-//            }
-//        }];
-//        
-////        [imageLaunch sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",IMGURL]]];
-//    }
-//    else
-//    {
-//        imageLaunch.image = [UIImage imageNamed:@"Launch-h568@2x.png"];
-//    }
-//    [self.view addSubview:imageLaunch];
-    
-    imageLaunch.image = [UIImage imageNamed:@"1.jpg"];
+        
+    imageLaunch.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",@"张_1.jpg"]];
     [self.view addSubview:imageLaunch];
     
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -111,7 +90,6 @@
     {
         // 负责呈现新手引导画面
         GuideViewController *guideViewController = [[GuideViewController alloc]init];
-        //        guideViewController.fromPageType = 0;
         ((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController = guideViewController;
     }
 

@@ -8,7 +8,7 @@
 
 #import "ZFProgressView.h"
 
-#define DefaultLineWidth 5
+#define DefaultLineWidth 15
 
 @interface ZFProgressView ()
 
@@ -68,8 +68,9 @@
 
 -(void) layoutViews:(ZFProgressViewStyle)style
 {
-    [self.progressLabel setTextColor:[UIColor whiteColor]];
-    self.progressLabel.text = @"0%";
+    [self.progressLabel setTextColor:[UIColor greenColor]];
+    self.progressLabel.backgroundColor = [UIColor orangeColor];
+    self.progressLabel.text = @"0";
     self.progressLabel.textAlignment = NSTextAlignmentCenter;
     self.progressLabel.font = [UIFont systemFontOfSize:25 weight:0.4];
     [self addSubview:self.progressLabel];
@@ -78,14 +79,14 @@
         _backgroundLayer = [CAShapeLayer layer];
         _backgroundLayer.frame = self.bounds;
         _backgroundLayer.fillColor = nil;
-        _backgroundLayer.strokeColor = [UIColor brownColor].CGColor;
+        _backgroundLayer.strokeColor = [UIColor grayColor].CGColor;
     }
 
     if (!_progressLayer) {
         _progressLayer = [CAShapeLayer layer];
         _progressLayer.frame = self.bounds;
         _progressLayer.fillColor = nil;
-        _progressLayer.strokeColor = [UIColor whiteColor].CGColor;
+        _progressLayer.strokeColor = [UIColor redColor].CGColor;
     }
 
     
@@ -306,11 +307,12 @@
 -(void)setTimeDuration:(CGFloat)timeDuration
 {
     _timeDuration = timeDuration;
-    [self setProgress:1.0 Animated:YES];
+    [self setProgress:1.0 Animated:YES EndValue:self.mEndValue];
 }
 #pragma mark - progress animated YES or NO
--(void)setProgress:(CGFloat)Percentage Animated:(BOOL)animated
+-(void)setProgress:(CGFloat)Percentage Animated:(BOOL)animated  EndValue:(NSString *)mEndValue
 {
+    self.mEndValue = mEndValue;
     self.Percentage = Percentage;
     if (animated) {
   
@@ -327,38 +329,37 @@
         
         animation.duration = self.timeDuration;
 
-        //start timer
-        _timer = [NSTimer scheduledTimerWithTimeInterval:_step
-                                                  target:self
-                                                selector:@selector(numberAnimation)
-                                                userInfo:nil
-                                                 repeats:YES];
+        
+        [NSTimer scheduledTimerWithTimeInterval:_step target:self selector:@selector(numberAnimation:) userInfo:nil repeats:YES];
+        
         [_progressLayer addAnimation:animation forKey:@"strokeEndAnimation"];
 
     } else {
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
         _progressLayer.strokeEnd = _Percentage;
-        _progressLabel.text = [NSString stringWithFormat:@"%.0f%%",_Percentage*100];
+        _progressLabel.text = [NSString stringWithFormat:@"%@",self.mEndValue];
         [CATransaction commit];
     }
 }
 
 
--(void)numberAnimation
+-(void)numberAnimation:(NSTimer *)mTimer
 {
     //Duration 动画持续时长
     _sumSteps += _step;
-    float sumSteps =  _Percentage /self.timeDuration *_sumSteps;
-    if (_sumSteps >= self.timeDuration) {
+    if (_sumSteps >= self.timeDuration)
+    {
+        NSLog(@"11111");
+        _progressLabel.text = [NSString stringWithFormat:@"%@",self.mEndValue];
+
         //close timer
-        [_timer invalidate];
-        _timer = nil;
+        [mTimer invalidate];
+        mTimer = nil;
         return;
     }
-    _progressLabel.text = [NSString stringWithFormat:@"%.0f%%",sumSteps *100];
+    int m  = arc4random() % 2000;
+    _progressLabel.text = [NSString stringWithFormat:@"%d",m];
+    NSLog(@"222222");
 }
 @end
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com

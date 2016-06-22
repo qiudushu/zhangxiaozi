@@ -17,6 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = [MyHelper colorWithHexString:@"888888"];
+    
+    NSLog(@"单例＝＝＝%@",[MyHelper ShareMyHelper].qiudushu);
+
 }
 
 - (void)didReceiveMemoryWarning {

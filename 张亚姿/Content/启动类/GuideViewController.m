@@ -20,18 +20,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
-    /**
-     *  引导页
-     *
-     *  @return <#return value description#>
-     */
-    HADirect *d = [HADirect direcWithtFrame:kFrame ImageArr:@[@"user_1.jpg",@"user_2.jpg",@"user_3.jpg",@"user_4.jpg"] AndImageClickBlock:^(NSInteger index) {
-        NSLog(@"点击的是当前  %ld  张照片 ",(long)index);
-    }];
-//    [d stopTimer];
-    [self.view addSubview:d];
+    self.view.backgroundColor = [UIColor orangeColor];
     
     UIButton *mBtn = [[UIButton alloc]init];
     mBtn.frame = CGRectMake(0, 40, 200, 40);

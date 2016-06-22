@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZYZbaseButton.h"
+
+
 
 @interface ZYZBaseView : UIView
+
+- (void)SetBlackButton:(NSString *)mNSString;
+
 
 @end

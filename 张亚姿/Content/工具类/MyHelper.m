@@ -16,6 +16,32 @@
 
 @implementation MyHelper
 
+
+/**
+ *  创建单例
+ */
++ (instancetype)ShareMyHelper
+{
+    static MyHelper *__shareFont = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        __shareFont = [[MyHelper alloc] init];
+    });
+    return __shareFont;
+}
+/**
+ *   初始化
+ */
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _qiudushu = @"邱读书";
+    }
+    return self;
+}
+
+ 
 + (BOOL)isEmpty:(NSString*)string
 {
     if (string == nil)
@@ -658,5 +684,410 @@
 ////        kTipAlert(@"%@", tipStr);
 //    }
 //}
+
+/**
+ *  生成存放十个随机数的数组
+ */
++ (NSArray *)RetbackOccasionalNumArr
+{
+    NSMutableArray *mArr = [[NSMutableArray alloc]init];
+    for (int i = 0; i < 20; i ++)
+    {
+        int m  = arc4random() % 1000;
+        [mArr addObject:[NSString stringWithFormat:@"%d",m]];
+    }
+    return mArr;
+}
+/**
+ *  生成存放随机数的数组
+ */
++ (NSArray *)RetbackOccasionalNummerArr:(NSString *)mEndValue
+{
+    NSMutableArray *mArr = [[NSMutableArray alloc]init];
+    if ([mEndValue containsString:@"m"])
+    {
+        int aa = 999/100;
+        for (int i = 1; i < aa; i ++)
+        {
+            int m = i * 100 + arc4random()%100;
+            [mArr addObject:[NSString stringWithFormat:@"%d",m]];
+        }
+
+        int aaa = [mEndValue intValue]/100;
+        for (int i = 1; i < aaa; i ++)
+        {
+            int m = i * 100 + arc4random()%100;
+            [mArr addObject:[NSString stringWithFormat:@"%dk",m]];
+        }
+        
+        NSString *PreStr = [mEndValue substringToIndex:mEndValue.length -1];
+        if (mEndValue.length - 1 == 3)
+        {
+            /**
+             *  100m - 999m
+             */
+            int a = [mEndValue intValue]/100;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 100 + arc4random()%100;
+                [mArr addObject:[NSString stringWithFormat:@"%dm",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+        else if (mEndValue.length - 1 == 2)
+        {
+            /**
+             *  10m - 99m
+             */
+            int a = [PreStr intValue]/10;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 10 + arc4random()%10;
+                [mArr addObject:[NSString stringWithFormat:@"%dm",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+        else if (mEndValue.length - 1 == 1)
+        {
+            /**
+             *  1m - 9m
+             */
+            for (int i = 0; i < [PreStr intValue]; i++)
+            {
+                [mArr addObject:[NSString stringWithFormat:@"%dm",i]];
+            }
+            [mArr addObject:mEndValue];
+        }
+    }
+    else if ([mEndValue containsString:@"k"])
+    {
+        int aa = 999/100;
+        for (int i = 1; i < aa; i ++)
+        {
+            int m = i * 100 + arc4random()%100;
+            [mArr addObject:[NSString stringWithFormat:@"%d",m]];
+        }
+        NSString *PreStr = [mEndValue substringToIndex:mEndValue.length -1];
+        /**
+         *  以k结尾最大值 1k － 999k
+         */
+        if (mEndValue.length - 1 == 3)
+        {
+            /**
+             *  100k - 999k
+             */
+            int a = [mEndValue intValue]/100;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 100 + arc4random()%100;
+                [mArr addObject:[NSString stringWithFormat:@"%dk",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+        else if (mEndValue.length - 1 == 2)
+        {
+            /**
+             *  10k - 99k
+             */
+            /**
+             *  只有两位
+             */
+            int a = [PreStr intValue]/10;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 10 + arc4random()%10;
+                [mArr addObject:[NSString stringWithFormat:@"%dk",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+        else if (mEndValue.length - 1 == 1)
+        {
+            /**
+             *  1k - 9k
+             */
+            for (int i = 0; i < [PreStr intValue]; i++)
+            {
+                [mArr addObject:[NSString stringWithFormat:@"%dk",i]];
+            }
+            [mArr addObject:mEndValue];
+        }
+    }
+    else
+    {
+        /**
+         *  常量值  1 - 999
+         */
+        if (mEndValue.length == 1)
+        {
+            /**
+             *  只有一位
+             */
+            for (int i = 0; i <= [mEndValue intValue]; i++)
+            {
+                [mArr addObject:[NSString stringWithFormat:@"%d",i]];
+            }
+        }
+        else if (mEndValue.length == 2)
+        {
+            /**
+             *  只有两位
+             */
+            int a = [mEndValue intValue]/10;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 10 + arc4random()%10;
+                [mArr addObject:[NSString stringWithFormat:@"%d",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+        else
+        {
+            /**
+             *  只有三位
+             */
+            int a = [mEndValue intValue]/100;
+            for (int i = 1; i < a; i ++)
+            {
+                int m = i * 100 + arc4random()%100;
+                [mArr addObject:[NSString stringWithFormat:@"%d",m]];
+            }
+            [mArr addObject:mEndValue];
+        }
+    }
+    return mArr;
+}
+/**
+ *  返回没有 .00  后缀的字符串
+ */
++ (NSString *)RetBackWithoutZero:(NSString *)mString
+{
+    NSString *tmpStr = [mString substringWithRange:NSMakeRange(mString.length - 3, 3)];
+    if ([tmpStr isEqualToString:@".00"])
+    {
+        tmpStr = [mString substringWithRange:NSMakeRange(0, mString.length - 3)];
+    }
+    else
+    {
+        tmpStr = mString;
+    }
+    return tmpStr;
+}
+
+/**
+ *  磁盘总空间
+ */
++ (CGFloat)diskOfAllSizeMBytes
+{
+    CGFloat size = 0.0;
+    NSError *error;
+    NSDictionary *dic = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:&error];
+    if (error) {
+#ifdef DEBUG
+        NSLog(@"error: %@", error.localizedDescription);
+#endif
+    }else{
+        NSNumber *number = [dic objectForKey:NSFileSystemSize];
+        size = [number floatValue]/1024/1024;
+    }
+    return size;
+}
+/**
+ * 磁盘可用空间大小
+ */
++ (CGFloat)diskOfFreeSizeMBytes
+{
+    CGFloat size = 0.0;
+    NSError *error;
+    NSDictionary *dic = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:&error];
+    if (error) {
+#ifdef DEBUG
+        NSLog(@"error: %@", error.localizedDescription);
+#endif
+    }else{
+        NSNumber *number = [dic objectForKey:NSFileSystemFreeSize];
+        size = [number floatValue]/1024/1024;
+    }
+    return size;
+}
+/**
+ *  获取文件大小
+ */
++ (long long)fileSizeAtPath:(NSString *)filePath
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:filePath]) return 0;
+    return [[fileManager attributesOfItemAtPath:filePath error:nil] fileSize];
+}
+
+/**
+ *  获取字符串首字符
+ */
++ (NSString *)firstCharacterWithString:(NSString *)string
+{
+    NSMutableString *str = [NSMutableString stringWithString:string];
+    CFStringTransform((CFMutableStringRef)str, NULL, kCFStringTransformMandarinLatin, NO);
+    CFStringTransform((CFMutableStringRef)str, NULL, kCFStringTransformStripDiacritics, NO);
+    NSString *pingyin = [str capitalizedString];
+    return [pingyin substringToIndex:1];
+}
+////将字符串数组按照元素首字母顺序进行排序分组
+//+ (NSDictionary *)dictionaryOrderByCharacterWithOriginalArray:(NSArray *)array
+//{
+//    if (array.count == 0) {
+//        return nil;
+//    }
+//    for (id obj in array) {
+//        if (![obj isKindOfClass:[NSString class]]) {
+//            return nil;
+//        }
+//    }
+//    UILocalizedIndexedCollation *indexedCollation = [UILocalizedIndexedCollation currentCollation];
+//    NSMutableArray *objects = [NSMutableArray arrayWithCapacity:indexedCollation.sectionTitles.count];
+//    //创建27个分组数组
+//    for (int i = 0; i < indexedCollation.sectionTitles.count; i++) {
+//        NSMutableArray *obj = [NSMutableArray array];
+//        [objects addObject:obj];
+//    }
+//    NSMutableArray *keys = [NSMutableArray arrayWithCapacity:objects.count];
+//    //按字母顺序进行分组
+//    NSInteger lastIndex = -1;
+//    for (int i = 0; i < array.count; i++) {
+//        NSInteger index = [indexedCollation sectionForObject:array[i] collationStringSelector:@selector(uppercaseString)];
+//        [[objects objectAtIndex:index] addObject:array[i]];
+//        lastIndex = index;
+//    }
+//    //去掉空数组
+//    for (int i = 0; i < objects.count; i++) {
+//        NSMutableArray *obj = objects[i];
+//        if (obj.count == 0) {
+//            [objects removeObject:obj];
+//        }
+//    }
+//    //获取索引字母
+//    for (NSMutableArray *obj in objects)
+//    {
+//        NSString *str = obj[0];
+//        NSString *key = [Utilities firstCharacterWithString:str];
+//        [keys addObject:key];
+//    }
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+//    [dic setObject:objects forKey:keys];
+//    return dic;
+//}
+
+
+#pragma mark - 对图片进行滤镜处理
+// 怀旧 --> CIPhotoEffectInstant                         单色 --> CIPhotoEffectMono
+// 黑白 --> CIPhotoEffectNoir                            褪色 --> CIPhotoEffectFade
+// 色调 --> CIPhotoEffectTonal                           冲印 --> CIPhotoEffectProcess
+// 岁月 --> CIPhotoEffectTransfer                        铬黄 --> CIPhotoEffectChrome
+// CILinearToSRGBToneCurve, CISRGBToneCurveToLinear, CIGaussianBlur, CIBoxBlur, CIDiscBlur, CISepiaTone, CIDepthOfField
++ (UIImage *)filterWithOriginalImage:(UIImage *)image filterName:(NSString *)name
+{
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CIImage *inputImage = [[CIImage alloc] initWithImage:image];
+    CIFilter *filter = [CIFilter filterWithName:name];
+    [filter setValue:inputImage forKey:kCIInputImageKey];
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    CGImageRef cgImage = [context createCGImage:result fromRect:[result extent]];
+    UIImage *resultImage = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+    return resultImage;
+}
+/**
+ * 全屏截图
+ */
++ (UIImage *)shotScreen
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIGraphicsBeginImageContext(window.bounds.size);
+    [window.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+/**
+ * 压缩图片到指定尺寸大小
+ */
++ (UIImage *)compressOriginalImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIImage *resultImage = image;
+    UIGraphicsBeginImageContext(size);
+    [resultImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIGraphicsEndImageContext();
+    return resultImage;
+}
+/**
+ *  字符串中是否有中文
+ */
++ (BOOL)isHaveChineseInString:(NSString *)string
+{
+    for(NSInteger i = 0; i < [string length]; i++){
+        int a = [string characterAtIndex:i];
+        if (a > 0x4e00 && a < 0x9fff) {
+            return YES;
+        }
+    }
+    return NO;
+}
+/**
+ * 获取UUID
+ */
++ (NSString *)getUUID
+{
+    CFUUIDRef puuid = CFUUIDCreate(NULL);
+    CFStringRef uuidString = CFUUIDCreateString(NULL, puuid);
+    NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy(NULL, uuidString));
+    CFRelease(puuid);
+    CFRelease(uuidString);
+    return result;
+}
+
+#pragma mark - 私有方法
+/**
+ *  基本的验证方法
+ *
+ *  @param regEx 校验格式
+ *  @param data  要校验的数据
+ *
+ *  @return YES:成功 NO:失败
+ */
++(BOOL)baseCheckForRegEx:(NSString *)regEx data:(NSString *)data{
+    
+    NSPredicate *card = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regEx];
+    
+    if (([card evaluateWithObject:data])) {
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - 由数字和26个英文字母组成的字符串
++ (BOOL) checkForNumberAndCase:(NSString *)data{
+    NSString *regEx = @"^[A-Za-z0-9]+$";
+    return [self baseCheckForRegEx:regEx data:data];
+}
+#pragma mark - 小写字母
++(BOOL)checkForLowerCase:(NSString *)data{
+    NSString *regEx = @"^[a-z]+$";
+    return [self baseCheckForRegEx:regEx data:data];
+}
+
+#pragma mark - 大写字母
++(BOOL)checkForUpperCase:(NSString *)data{
+    NSString *regEx = @"^[A-Z]+$";
+    return [self baseCheckForRegEx:regEx data:data];
+}
+#pragma mark - 26位英文字母
++(BOOL)checkForLowerAndUpperCase:(NSString *)data{
+    NSString *regEx = @"^[A-Za-z]+$";
+    return [self baseCheckForRegEx:regEx data:data];
+}
+
+#pragma mark - 特殊字符
++ (BOOL) checkForSpecialChar:(NSString *)data{
+    NSString *regEx = @"[^%&',;=?$\x22]+";
+    return [self baseCheckForRegEx:regEx data:data];
+}
 
 @end

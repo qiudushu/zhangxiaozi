@@ -7,6 +7,9 @@
 //
 
 #import "TeachViewController.h"
+#import "ZFProgressView.h"
+#import "LBToAppStore.h"
+
 
 @interface TeachViewController ()
 
@@ -14,9 +17,24 @@
 
 @implementation TeachViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    ZFProgressView *progress1 = [[ZFProgressView alloc] initWithFrame:CGRectMake(50, 150, 100, 100)];
+    [self.view addSubview:progress1];
+    [progress1 setProgress:0.6 Animated:YES EndValue:@"100k"];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //用户好评系统
+    LBToAppStore *toAppStore = [[LBToAppStore alloc]init];
+    toAppStore.myAppID = @"797395756";//@"1067787090";
+    [toAppStore showGotoAppStore:self];
+    
 }
 
 - (void)didReceiveMemoryWarning {
